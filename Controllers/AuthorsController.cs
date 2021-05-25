@@ -41,13 +41,6 @@ namespace RecipeLab.Controllers
 
             return author;
         }
-        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes(int id)
-        {
-            var recipes = await _context.Recipes.Where(r => r.AuthorId == id);
-
-            return recipes.ToListAsync();
-        }
-
         //PUT: api/Authors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

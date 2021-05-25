@@ -19,7 +19,7 @@ namespace RecipeLab.Models
         [Display(Name = "Назва інгридієнта")]
         public string Name { get; set; }
 
-        [Display(Name = "Зображення блюда")]
+        [Display(Name = "Зображення інгридієнта")]
         public byte[] Image { get; set; }
 
         public virtual ICollection<RecipeIngredientPair> RecipeIngredientPairs { get; set; }

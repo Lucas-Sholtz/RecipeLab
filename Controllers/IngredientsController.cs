@@ -40,7 +40,27 @@ namespace RecipeLab.Controllers
 
             return ingredient;
         }
+        [HttpGet("ingredientsinrecipe/{recipeId}")]
+        public async Task<ActionResult<IEnumerable<Ingredient>>> GetIngredientsInRecipe(int recipeId)
+        {
+            var ingredients = await _context.RecipeIngredientPairs.Where(p => p.RecipeId == recipeId).Include(p => p.Ingredient).Select(p => p.Ingredient).ToListAsync();
 
+            if (ingredients == null)
+            {
+                return NotFound();
+            }
+            return ingredients;
+        }
+        [HttpGet("ingredientsincategory/{categoryId}")]
+        public async Task<ActionResult<IEnumerable<Ingredient>>> GetIngredientsInCategory(int categoryId)
+        {
+            var ingredients = await _context.IngredientCategoryIngredientPairs.Where(p => p.IngredientCategoryId == categoryId).Include(p => p.Ingredient).Select(p => p.Ingredient).ToListAsync();
+            if (ingredients == null)
+            {
+                return NotFound();
+            }
+            return ingredients;
+        }
         // PUT: api/Ingredients/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
