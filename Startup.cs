@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using RecipeLab.Models;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 
 namespace RecipeLab
 {
@@ -23,6 +24,10 @@ namespace RecipeLab
         public IConfiguration Configuration { get; set; }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<RecipeContext>(options => options.UseSqlServer(connection));
             services.AddControllersWithViews();
@@ -35,7 +40,20 @@ namespace RecipeLab
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseSpaStaticFiles();
+            }
+            app.UseStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
 
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
